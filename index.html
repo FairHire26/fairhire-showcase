@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fair Hire Platform — What We've Built</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #F5A623;
+      --gold-light: #FFD580;
+      --gold-dark: #C4850E;
+      --bg: #0A0A0A;
+      --surface: #111111;
+      --surface-2: #1A1A1A;
+      --surface-3: #222222;
+      --border: #2A2A2A;
+      --text: #FFFFFF;
+      --text-muted: #999999;
+      --text-dim: #666666;
+      --success: #22C55E;
+      --blue: #3B82F6;
+      --purple: #A855F7;
+      --red: #EF4444;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* === NAV === */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s;
+    }
+    nav.scrolled { background: rgba(10, 10, 10, 0.95); }
+    .nav-brand {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* === HERO === */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(245,166,35,0.08) 0%, transparent 60%);
+      animation: heroGlow 8s ease-in-out infinite alternate;
+    }
+    @keyframes heroGlow {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.1) translate(2%, -2%); }
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.2);
+      border-radius: 100px;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 .gold { color: var(--gold); }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat .number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+    }
+    .hero-stat .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    /* === SECTIONS === */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin-bottom: 3rem;
+    }
+
+    /* === ANIMATED ELEMENTS === */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* === OVERVIEW GRID === */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .overview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+      cursor: default;
+    }
+    .overview-card:hover {
+      border-color: rgba(245,166,35,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .overview-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .overview-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .overview-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .icon-gold { background: rgba(245,166,35,0.15); }
+    .icon-blue { background: rgba(59,130,246,0.15); }
+    .icon-green { background: rgba(34,197,94,0.15); }
+    .icon-purple { background: rgba(168,85,247,0.15); }
+    .icon-red { background: rgba(239,68,68,0.15); }
+
+    /* === FEATURE DEEP DIVE === */
+    .feature-section {
+      padding: 4rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .feature-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .feature-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(245,166,35,0.15);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .feature-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .feature-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      transition: all 0.2s;
+    }
+    .feature-item:hover {
+      border-color: var(--border);
+      background: var(--surface-2);
+    }
+    .feature-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(34,197,94,0.15);
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .feature-item-text h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .feature-item-text p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* === TECH STACK === */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .tech-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .tech-card:hover {
+      border-color: rgba(245,166,35,0.3);
+      transform: translateY(-2px);
+    }
+    .tech-card .tech-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    .tech-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .tech-card p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* === TIMELINE === */
+    .timeline {
+      position: relative;
+      padding-left: 3rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), var(--gold-dark), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -3rem;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 3px solid var(--bg);
+      z-index: 1;
+    }
+    .timeline-item .date {
+      font-size: 0.75rem;
+      color: var(--gold);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+    .timeline-item h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .timeline-item .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .tag-gold { background: rgba(245,166,35,0.15); color: var(--gold); }
+    .tag-blue { background: rgba(59,130,246,0.15); color: var(--blue); }
+    .tag-green { background: rgba(34,197,94,0.15); color: var(--success); }
+    .tag-purple { background: rgba(168,85,247,0.15); color: var(--purple); }
+
+    /* === STATS BAR === */
+    .stats-bar {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-item .stat-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .stat-item .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* === PRICING DISPLAY === */
+    .pricing-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+    .pricing-card.worker::before { background: var(--success); }
+    .pricing-card.client::before { background: var(--blue); }
+    .pricing-card .card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+    .pricing-card.worker .card-label { color: var(--success); }
+    .pricing-card.client .card-label { color: var(--blue); }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .price-row:last-child {
+      border-bottom: none;
+      padding-top: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .price-row .price-label { color: var(--text-muted); font-size: 0.9rem; }
+    .price-row .price-value { font-weight: 600; }
+
+    /* === SECURITY SECTION === */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+    }
+    .security-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .security-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(245,166,35,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .security-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .security-item p { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* === INTEGRATIONS === */
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .integration-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .integration-card:hover {
+      border-color: rgba(245,166,35,0.3);
+      transform: translateY(-2px);
+    }
+    .integration-card .int-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .integration-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .integration-card p { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* === PORTAL TABS === */
+    .portal-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .portal-tab {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .portal-tab.active {
+      color: var(--gold);
+    }
+    .portal-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gold);
+    }
+    .portal-tab:hover { color: var(--text); }
+    .portal-content { display: none; }
+    .portal-content.active { display: block; }
+
+    /* === PAGE LIST === */
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.75rem;
+    }
+    .page-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.2s;
+    }
+    .page-item:hover { background: var(--surface-2); }
+    .page-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .page-item h4 { font-size: 0.85rem; font-weight: 600; }
+    .page-item span { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* === CTA === */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 2rem;
+      position: relative;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(245,166,35,0.06) 0%, transparent 60%);
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: #000;
+    }
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(245,166,35,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* === FOOTER === */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    /* === SCROLLBAR === */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+    /* === COUNTER ANIMATION === */
+    .counter { display: inline-block; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .pricing-demo { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      section { padding: 4rem 1.25rem; }
+      .stats-bar { padding: 2rem 1.5rem; }
+    }
+
+    /* === VIDEO SECTION === */
+    .video-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 2rem 0;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .video-placeholder {
+      text-align: center;
+      padding: 2rem;
+    }
+    .video-placeholder .play-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(245,166,35,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2rem;
+    }
+
+    /* === ACCORDION === */
+    .accordion-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .accordion-header {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .accordion-header:hover { background: var(--surface-2); }
+    .accordion-header h4 { font-size: 1rem; font-weight: 600; }
+    .accordion-arrow {
+      font-size: 1.25rem;
+      transition: transform 0.3s;
+      color: var(--text-dim);
+    }
+    .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .accordion-item.open .accordion-body { max-height: 2000px; }
+    .accordion-body-inner {
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    /* === PROGRESS BAR === */
+    .progress-bar-container {
+      margin: 0.5rem 0;
+    }
+    .progress-bar-bg {
+      height: 8px;
+      background: var(--surface-3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 0;
+    }
+    .progress-bar-fill.gold { background: var(--gold); }
+    .progress-bar-fill.green { background: var(--success); }
+    .progress-bar-fill.blue { background: var(--blue); }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    /* === INTERACTIVE DIAGRAM === */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      min-width: 140px;
+      transition: all 0.3s;
+    }
+    .flow-step:hover {
+      border-color: var(--gold);
+      transform: scale(1.05);
+    }
+    .flow-step .step-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .flow-step h4 { font-size: 0.85rem; font-weight: 700; }
+    .flow-step p { font-size: 0.7rem; color: var(--text-dim); }
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: var(--gold);
+      padding: 0 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .flow-diagram { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-brand">FAIR HIRE</div>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#portals">Portals</a></li>
+      <li><a href="#pricing-model">Pricing</a></li>
+      <li><a href="#tech">Tech Stack</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      LIVE IN PRODUCTION
+    </div>
+    <h1>
+      Everything We've Built<br>
+      for <span class="gold">Fair Hire</span>
+    </h1>
+    <p>
+      A complete, production-ready labour hire platform — from first commit to a fully deployed SaaS product with 48 pages, 16+ integrations, and enterprise-grade security.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number"><span class="counter" data-target="48">0</span></div>
+        <div class="label">Unique Pages</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number"><span class="counter" data-target="79">0</span></div>
+        <div class="label">Frontend Files</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number"><span class="counter" data-target="26">0</span>+</div>
+        <div class="label">Database Tables</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number"><span class="counter" data-target="20">0</span>K+</div>
+        <div class="label">Lines of Code</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number"><span class="counter" data-target="16">0</span>+</div>
+        <div class="label">Integrations</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW CARDS -->
+  <section id="overview">
+    <div class="reveal">
+      <div class="section-label">Platform Overview</div>
+      <div class="section-title">A Full-Stack SaaS Platform</div>
+      <div class="section-desc">
+        Fair Hire is Australia's first transparent labour hire platform. Here's what powers it.
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="overview-card reveal" style="transition-delay: 0.1s">
+        <div class="icon icon-gold">&#128100;</div>
+        <h3>3 User Portals</h3>
+        <p>Dedicated dashboards for Workers, Clients, and Admins — each with role-specific features, navigation, and permissions.</p>
+      </div>
+      <div class="overview-card reveal" style="transition-delay: 0.15s">
+        <div class="icon icon-blue">&#128188;</div>
+        <h3>Full Job Lifecycle</h3>
+        <p>Post → Search → Apply → Assign → Clock In/Out → Timesheet → Invoice → Pay. Every step is tracked and managed.</p>
+      </div>
+      <div class="overview-card reveal" style="transition-delay: 0.2s">
+        <div class="icon icon-green">&#128176;</div>
+        <h3>Transparent Pricing</h3>
+        <p>Workers and clients each see their own rate card. No hidden fees. Platform margin is clear and fair.</p>
+      </div>
+      <div class="overview-card reveal" style="transition-delay: 0.25s">
+        <div class="icon icon-purple">&#128274;</div>
+        <h3>Enterprise Security</h3>
+        <p>JWT auth with refresh tokens, AES-256 encryption, rate limiting, SQL injection protection, and full audit logging.</p>
+      </div>
+      <div class="overview-card reveal" style="transition-delay: 0.3s">
+        <div class="icon icon-red">&#128231;</div>
+        <h3>40+ Email Templates</h3>
+        <p>Automated emails for every event — job assignments, invoices, reminders, password resets, and more via SendGrid.</p>
+      </div>
+      <div class="overview-card reveal" style="transition-delay: 0.35s">
+        <div class="icon icon-gold">&#128241;</div>
+        <h3>Mobile Ready</h3>
+        <p>Capacitor-powered iOS &amp; Android apps with GPS tracking, push notifications, camera upload, and deep links.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <section>
+    <div class="stats-bar reveal">
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="8623">0</span></div>
+        <div class="stat-label">Lines of Backend Routes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="6991">0</span></div>
+        <div class="stat-label">Lines of Admin UI</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="4643">0</span></div>
+        <div class="stat-label">Lines of Services</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="918">0</span></div>
+        <div class="stat-label">Lines of DB Schema</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="12">0</span></div>
+        <div class="stat-label">Route Files</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="19">0</span></div>
+        <div class="stat-label">Service Modules</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW THE PLATFORM WORKS -->
+  <section>
+    <div class="reveal">
+      <div class="section-label">How It Works</div>
+      <div class="section-title">The Job Lifecycle</div>
+      <div class="section-desc">Every job flows through a complete, tracked pipeline from posting to payment.</div>
+    </div>
+
+    <div class="flow-diagram reveal">
+      <div class="flow-step">
+        <div class="step-icon">&#128221;</div>
+        <h4>Post Job</h4>
+        <p>Client creates listing</p>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-icon">&#128269;</div>
+        <h4>Match</h4>
+        <p>Workers apply or get assigned</p>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-icon">&#128205;</div>
+        <h4>Clock In</h4>
+        <p>GPS-verified attendance</p>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-icon">&#128203;</div>
+        <h4>Timesheet</h4>
+        <p>Submit &amp; approve hours</p>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-icon">&#128179;</div>
+        <h4>Invoice</h4>
+        <p>5-step approval chain</p>
+      </div>
+      <div class="flow-arrow">&#8594;</div>
+      <div class="flow-step">
+        <div class="step-icon">&#9989;</div>
+        <h4>Paid</h4>
+        <p>Stripe payout to worker</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAL DEEP DIVE -->
+  <section id="portals">
+    <div class="reveal">
+      <div class="section-label">Three Portals</div>
+      <div class="section-title">Every User Has a Home</div>
+      <div class="section-desc">Workers, clients, and admins each get a purpose-built experience.</div>
+    </div>
+
+    <div class="portal-tabs reveal">
+      <button class="portal-tab active" onclick="switchTab('worker')">Worker Portal</button>
+      <button class="portal-tab" onclick="switchTab('client')">Client Portal</button>
+      <button class="portal-tab" onclick="switchTab('admin')">Admin Portal</button>
+    </div>
+
+    <!-- Worker Portal -->
+    <div id="tab-worker" class="portal-content active">
+      <div class="page-grid">
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Dashboard</h4><span>Earnings overview, upcoming jobs, quick stats</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Profile</h4><span>Photo, rates, skills, bank details, Stripe Connect</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Find Jobs</h4><span>Browse, filter by industry/skill/location, apply</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>My Jobs</h4><span>Assigned/in-progress/completed jobs, clock in/out</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Earnings</h4><span>Monthly charts, payout requests, CSV export</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Documents</h4><span>Upload White Card, licenses, certifications</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Availability</h4><span>Set weekly availability calendar</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Messages</h4><span>Chat with clients &amp; admins, email reply</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>FH Tokens</h4><span>Gamification, leaderboard, milestones, rewards</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--success)"></div><div><h4>Reviews</h4><span>Rate clients after job completion</span></div></div>
+      </div>
+    </div>
+
+    <!-- Client Portal -->
+    <div id="tab-client" class="portal-content">
+      <div class="page-grid">
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Dashboard</h4><span>Active jobs, spend overview, recent activity</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Post a Job</h4><span>Full job form with auto-pricing breakdown</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>My Jobs</h4><span>Manage all jobs, assign workers, track status</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Find Workers</h4><span>Search by skill, rating, location, availability</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Favorites</h4><span>Save top workers for quick rehire</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Billing</h4><span>Subscription, payment methods, invoices</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Reports</h4><span>Spend analytics, worker performance, trends</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Messages</h4><span>Chat with workers &amp; support</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Reviews</h4><span>Rate workers, view feedback history</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--blue)"></div><div><h4>Profile</h4><span>Company info, ABN, logo, industry</span></div></div>
+      </div>
+    </div>
+
+    <!-- Admin Portal -->
+    <div id="tab-admin" class="portal-content">
+      <div class="page-grid">
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Overview Dashboard</h4><span>KPIs, revenue, users, jobs at a glance</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>User Management</h4><span>Search, filter, edit, suspend, create users</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Job Management</h4><span>All jobs, bulk assign, worksheets, urgent flags</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Payments</h4><span>Pending payments, payout processing, disputes</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Invoices</h4><span>5-step approval chain, late fees, reminders</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Document Review</h4><span>Approve/reject worker credentials</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Master Calendar</h4><span>All jobs on calendar, Google Calendar sync</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Worksheets</h4><span>Generate branded PDFs, email to workers</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Import Jobs</h4><span>CSV bulk import, worksheet import</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Remittances</h4><span>Upload, OCR parse, match to invoices</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Settings</h4><span>Platform config, fees, email templates</span></div></div>
+        <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Worker Invitations</h4><span>Invite workers with pre-filled details</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES DEEP DIVE -->
+  <section id="features">
+    <div class="reveal">
+      <div class="section-label">Feature Breakdown</div>
+      <div class="section-title">Everything Under the Hood</div>
+      <div class="section-desc">Click to expand each feature area and see what's been built.</div>
+    </div>
+
+    <!-- Authentication -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#128274;&nbsp; Authentication &amp; User Management</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Worker Signup</h4><p>Industry selection, skills, hourly rate, employment type (contractor/PAYG), TFN encryption, super fund details</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Client Signup</h4><p>Company details, ABN lookup, billing address, subscription tier selection</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Email Verification</h4><p>6-digit code with 10-minute expiry via SendGrid</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>JWT Token System</h4><p>Access token (15min) + refresh token (7 days) with auto-refresh via axios interceptor</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Password Reset</h4><p>Forgot password flow with time-limited tokens sent via email</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Worker Invitations</h4><p>Admin invites workers with pre-filled data, 14-day JWT invitation tokens</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Platform Agreements</h4><p>Full-screen modal on first login, version tracking, must-scroll-to-accept</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Profile Photos &amp; Logos</h4><p>AWS S3 upload with signed URLs for secure access</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Management -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#128188;&nbsp; Job Management</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Create Jobs</h4><p>Title, description, dates, location, industry, skills, equipment, urgent flag, auto-calculated pricing</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Multi-Worker Assignment</h4><p>Assign multiple workers per job with individual rates — each worker sees their own earnings</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Job Applications</h4><p>Workers browse available jobs, filter by industry/skill/location, and apply with optional message</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Status Pipeline</h4><p>Open → Assigned → In Progress → Completed → Cancelled — with timeline tracking</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Interim Pricing</h4><p>Admin can override standard pricing with flat rates for special arrangements</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Urgent Jobs</h4><p>Special flag with visual indicator and premium rate capability</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>PDF Worksheets</h4><p>Auto-generated branded A4 PDFs per worker with job details, uploaded to S3, emailed out</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Bulk CSV Import</h4><p>Upload CSV to create multiple jobs at once with worker assignments</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Tracking -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#9200;&nbsp; Time Tracking &amp; Timesheets</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>GPS Clock In/Out</h4><p>Geolocation tracking with IP fallback — records lat/lng and method (gps or ip)</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Timesheet Submission</h4><p>Workers confirm hours, add notes, submit for client approval</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Client Approval</h4><p>Clients review submitted timesheets, approve or request changes</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Monday Reminders</h4><p>Automated cron job emails every Monday 8AM AEDT for pending timesheets</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payments & Invoicing -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#128176;&nbsp; Payments, Invoicing &amp; Payroll</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Stripe Subscriptions</h4><p>5 subscription tiers with auto-billing, upgrade/downgrade, proration</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Stripe Connect Payouts</h4><p>Automated payouts to worker bank accounts with standard/fast tiers</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>BECS Direct Debit</h4><p>Australian bank transfer support for client payments</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>5-Step Invoice Chain</h4><p>Generate → Send → Approve → Payment Link → Paid — full audit trail</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Late Fees</h4><p>Auto-calculated at 0.0822%/day (30% p.a.) for overdue invoices</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>PAYG Payroll</h4><p>ATO tax brackets, super at 11.5%, payslip generation, YTD tracking</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>ABA Batch Files</h4><p>Generate BECS-compliant bank transfer files for bulk payments</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Invoice OCR</h4><p>Upload PDFs, auto-extract job numbers/amounts/dates via text parsing</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messaging & Notifications -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#128172;&nbsp; Messaging &amp; Notifications</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>In-App Chat</h4><p>Full messaging system with conversation threads, read receipts, and unread counts</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Email Reply Integration</h4><p>Workers and clients can reply to messages via email — parsed back into the chat via SendGrid Inbound</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Push Notifications</h4><p>iOS &amp; Android via device tokens with per-user notification preferences</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Notification Centre</h4><p>Bell icon with unread count, notification types for every platform event</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gamification -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#127942;&nbsp; FH Tokens &amp; Gamification</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Token Earning</h4><p>Workers earn tokens for jobs (20), 5-star reviews (30), referrals (150), profile completion (50), and more</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Leaderboard</h4><p>Top 100 users ranked by token balance — visible to all users</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Milestones &amp; Achievements</h4><p>Bronze, Silver, Gold tiers with unlockable badges and progress tracking</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Reward Redemption</h4><p>Spend tokens on discounts, featured profile, priority matching, and more</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="accordion-item reveal">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h4>&#11088;&nbsp; Reviews &amp; Documents</h4>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="feature-list">
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Two-Way Reviews</h4><p>Workers rate clients, clients rate workers — 1-5 stars with written feedback</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Average Rating Display</h4><p>Worker profiles show aggregated ratings and review count</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Document Upload</h4><p>White Card, licenses, certifications — uploaded to S3 with signed URLs</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Admin Document Review</h4><p>Approve/reject queue with status tracking and expiry alerts</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING MODEL -->
+  <section id="pricing-model">
+    <div class="reveal">
+      <div class="section-label">Core Business Logic</div>
+      <div class="section-title">Transparent Pricing Engine</div>
+      <div class="section-desc">
+        The heart of Fair Hire — workers and clients each see a different, honest view of the same transaction.
+      </div>
+    </div>
+
+    <div class="pricing-demo reveal">
+      <div class="pricing-card worker">
+        <div class="card-label">What the Worker Sees</div>
+        <div class="price-row">
+          <span class="price-label">Your hourly rate</span>
+          <span class="price-value">$45.00/hr</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Platform fee (10%)</span>
+          <span class="price-value" style="color: var(--red)">-$4.50/hr</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Client pays</span>
+          <span class="price-value" style="color: var(--success)">$49.50/hr</span>
+        </div>
+      </div>
+      <div class="pricing-card client">
+        <div class="card-label">What the Client Sees</div>
+        <div class="price-row">
+          <span class="price-label">Worker rate</span>
+          <span class="price-value">$49.50/hr</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Service fee (10%)</span>
+          <span class="price-value">$4.95/hr</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Booking fee</span>
+          <span class="price-value">$4.99</span>
+        </div>
+        <div class="price-row">
+          <span class="price-label">Total cost</span>
+          <span class="price-value" style="color: var(--blue)">$54.45/hr + $4.99</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 2rem">
+      <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Subscription Tiers</h3>
+      <div class="overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        <div class="overview-card" style="text-align:center">
+          <h3 style="color: var(--text-muted)">Starter</h3>
+          <div style="font-size: 2rem; font-weight: 800; margin: 0.5rem 0;">$79<span style="font-size: 1rem; color: var(--text-muted)">/mo</span></div>
+          <p>5 jobs/month<br>$15 per extra job</p>
+        </div>
+        <div class="overview-card" style="text-align:center; border-color: var(--gold);">
+          <div style="font-size: 0.7rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Most Popular</div>
+          <h3 style="color: var(--gold)">Growth</h3>
+          <div style="font-size: 2rem; font-weight: 800; margin: 0.5rem 0;">$249<span style="font-size: 1rem; color: var(--text-muted)">/mo</span></div>
+          <p>25 jobs/month<br>$10 per extra job</p>
+        </div>
+        <div class="overview-card" style="text-align:center">
+          <h3 style="color: var(--text-muted)">Business</h3>
+          <div style="font-size: 2rem; font-weight: 800; margin: 0.5rem 0;">$499<span style="font-size: 1rem; color: var(--text-muted)">/mo</span></div>
+          <p>75 jobs/month<br>$7 per extra job</p>
+        </div>
+        <div class="overview-card" style="text-align:center">
+          <h3 style="color: var(--text-muted)">Enterprise</h3>
+          <div style="font-size: 2rem; font-weight: 800; margin: 0.5rem 0;">$999<span style="font-size: 1rem; color: var(--text-muted)">/mo</span></div>
+          <p>Unlimited jobs<br>Priority support</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS -->
+  <section>
+    <div class="reveal">
+      <div class="section-label">Integrations</div>
+      <div class="section-title">16+ Services Connected</div>
+      <div class="section-desc">The platform integrates with best-in-class services for payments, email, storage, and more.</div>
+    </div>
+
+    <div class="integrations-grid reveal">
+      <div class="integration-card">
+        <div class="int-icon">&#128179;</div>
+        <h4>Stripe</h4>
+        <p>Subscriptions, Payment Intents, Connect, BECS, Webhooks</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#128231;</div>
+        <h4>SendGrid</h4>
+        <p>40+ email templates, Inbound Parse for reply-to-chat</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#9729;&#65039;</div>
+        <h4>AWS S3</h4>
+        <p>Document storage, signed URLs, ap-southeast-2</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#128197;</div>
+        <h4>Google Calendar</h4>
+        <p>Auto-sync all jobs to 3 admin calendars</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#128202;</div>
+        <h4>Xero</h4>
+        <p>OAuth, contact sync, invoice sync, audit log</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#128196;</div>
+        <h4>Google Docs</h4>
+        <p>Collaborative job worksheets from templates</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#127758;</div>
+        <h4>IP Geolocation</h4>
+        <p>Fallback location for clock in/out</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#128241;</div>
+        <h4>Capacitor</h4>
+        <p>iOS &amp; Android native apps</p>
+      </div>
+      <div class="integration-card">
+        <div class="int-icon">&#128642;</div>
+        <h4>Railway</h4>
+        <p>Cloud deployment, PostgreSQL, auto-SSL</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section id="tech">
+    <div class="reveal">
+      <div class="section-label">Tech Stack</div>
+      <div class="section-title">Built With Modern Tools</div>
+    </div>
+
+    <div class="tech-grid reveal">
+      <div class="tech-card">
+        <div class="tech-icon">&#9883;</div>
+        <h4>React 19</h4>
+        <p>Latest with TypeScript 5.9</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#9889;</div>
+        <h4>Vite 7</h4>
+        <p>Lightning-fast builds</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#127912;</div>
+        <h4>Tailwind CSS v4</h4>
+        <p>Dark theme, responsive</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#128421;</div>
+        <h4>Express 5</h4>
+        <p>Backend API framework</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#128451;</div>
+        <h4>PostgreSQL 17.7</h4>
+        <p>26+ tables, full schema</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#128272;</div>
+        <h4>JWT Auth</h4>
+        <p>Access + refresh tokens</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#128202;</div>
+        <h4>Recharts</h4>
+        <p>Data visualisation</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">&#128452;</div>
+        <h4>PDFKit</h4>
+        <p>Worksheet &amp; payslip generation</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section id="security">
+    <div class="reveal">
+      <div class="section-label">Security</div>
+      <div class="section-title">Enterprise-Grade Protection</div>
+      <div class="section-desc">A full security audit was completed in February 2026. Here's what protects the platform.</div>
+    </div>
+
+    <div class="security-grid reveal">
+      <div class="security-item">
+        <div class="security-icon">&#128272;</div>
+        <div><h4>AES-256 Encryption</h4><p>Tax File Numbers encrypted at rest with IV, masked in responses</p></div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">&#128737;</div>
+        <div><h4>SQL Injection Prevention</h4><p>All queries use parameterized $N placeholders, validated inputs</p></div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">&#128721;</div>
+        <div><h4>Rate Limiting</h4><p>500 req/15min general, 20 req/15min on auth endpoints</p></div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">&#127760;</div>
+        <div><h4>CORS &amp; Helmet</h4><p>Strict origin allowlist, security headers via Helmet</p></div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">&#128064;</div>
+        <div><h4>Audit Logging</h4><p>TFN access logs, email logs, sync logs — full traceability</p></div>
+      </div>
+      <div class="security-item">
+        <div class="security-icon">&#128566;</div>
+        <div><h4>Data Masking</h4><p>Bank details show last 4 digits only, TFN shows last 3</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPLETION PROGRESS -->
+  <section>
+    <div class="reveal">
+      <div class="section-label">Progress</div>
+      <div class="section-title">What's Been Delivered</div>
+    </div>
+
+    <div class="reveal" style="max-width: 700px;">
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Authentication &amp; Auth Flows</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill gold" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Worker Portal (10 pages)</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Client Portal (10 pages)</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Admin Portal (21 pages)</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill gold" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Payments &amp; Invoicing</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Integrations (Stripe, SendGrid, S3, GCal, Xero)</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Security Hardening</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill gold" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Mobile App (Capacitor)</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" data-width="100"></div></div>
+      </div>
+      <div class="progress-bar-container" style="margin-bottom: 1.5rem">
+        <div class="progress-label"><span>Production Deployment</span><span>100%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill blue" data-width="100"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="reveal">
+      <div class="section-label">Development Timeline</div>
+      <div class="section-title">From Idea to Production</div>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="date">Phase 1 — Foundation</div>
+        <h4>Core Platform Setup</h4>
+        <p>Express 5 API, PostgreSQL schema, JWT authentication, user signup/login, React frontend with routing and Tailwind dark theme.</p>
+        <div class="tags">
+          <span class="tag tag-gold">Backend</span>
+          <span class="tag tag-blue">Frontend</span>
+          <span class="tag tag-green">Auth</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Phase 2 — Worker &amp; Client Portals</div>
+        <h4>User Dashboards &amp; Job Management</h4>
+        <p>Worker profile, find jobs, apply to jobs, earnings dashboard, document upload. Client job posting, worker search, favorites, billing setup.</p>
+        <div class="tags">
+          <span class="tag tag-green">Worker</span>
+          <span class="tag tag-blue">Client</span>
+          <span class="tag tag-purple">Jobs</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Phase 3 — Payments &amp; Pricing</div>
+        <h4>Stripe Integration &amp; Transparent Pricing</h4>
+        <p>Subscription tiers, Stripe Connect for worker payouts, BECS Direct Debit, transparent pricing engine where workers and clients see different views.</p>
+        <div class="tags">
+          <span class="tag tag-gold">Stripe</span>
+          <span class="tag tag-green">Pricing</span>
+          <span class="tag tag-purple">Subscriptions</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Phase 4 — Admin Suite</div>
+        <h4>21-Page Admin Dashboard</h4>
+        <p>User management, job admin, payment processing, document review, master calendar, invoicing with 5-step approval, worksheets, settings, and analytics.</p>
+        <div class="tags">
+          <span class="tag tag-gold">Admin</span>
+          <span class="tag tag-blue">Calendar</span>
+          <span class="tag tag-green">Invoices</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Phase 5 — Advanced Features</div>
+        <h4>Time Tracking, Messaging, Gamification</h4>
+        <p>GPS clock in/out, timesheet workflows, in-app messaging with email reply, FH Tokens system with leaderboard and achievements, push notifications.</p>
+        <div class="tags">
+          <span class="tag tag-purple">GPS</span>
+          <span class="tag tag-blue">Chat</span>
+          <span class="tag tag-gold">Tokens</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Phase 6 — Integrations &amp; Payroll</div>
+        <h4>Xero, Google Calendar, PAYG</h4>
+        <p>Xero accounting sync, Google Calendar for all admin calendars, PAYG payroll with ATO tax brackets, super contributions, payslips, and ABA batch files.</p>
+        <div class="tags">
+          <span class="tag tag-green">Xero</span>
+          <span class="tag tag-blue">GCal</span>
+          <span class="tag tag-gold">Payroll</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">Phase 7 — Security &amp; Deployment</div>
+        <h4>Production Launch</h4>
+        <p>Full security audit (SQL injection, XSS, encryption), Railway deployment, custom domain (fairhire.com.au), SSL, CI/CD pipeline, platform agreements.</p>
+        <div class="tags">
+          <span class="tag tag-green">Security</span>
+          <span class="tag tag-gold">Deploy</span>
+          <span class="tag tag-purple">CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBLIC PAGES -->
+  <section>
+    <div class="reveal">
+      <div class="section-label">Marketing</div>
+      <div class="section-title">Public-Facing Pages</div>
+      <div class="section-desc">The marketing site that sells the platform to workers and clients.</div>
+    </div>
+
+    <div class="page-grid reveal">
+      <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Homepage</h4><span>Hero, audience toggle, how it works, testimonials, pricing, FAQ</span></div></div>
+      <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>How It Works</h4><span>Step-by-step for workers &amp; clients, transparency highlight</span></div></div>
+      <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Pricing</h4><span>Pay-per-hire + 4 subscription tiers with comparison</span></div></div>
+      <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>About</h4><span>Company story, team bios, mission &amp; values</span></div></div>
+      <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>Contact</h4><span>Contact form with email routing</span></div></div>
+      <div class="page-item"><div class="page-dot" style="background:var(--gold)"></div><div><h4>AV Industry Signup</h4><span>Specialised onboarding for AV/events workers</span></div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>This Is <span style="color: var(--gold)">Fair Hire</span></h2>
+    <p>A complete, market-ready SaaS platform built from the ground up — every page, every feature, every integration.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative;">
+      <a href="https://www.fairhire.com.au" target="_blank" class="btn btn-gold">Visit Live Site &#8594;</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p style="color: var(--gold); font-weight: 700; margin-bottom: 0.5rem;">FAIR HIRE</p>
+    <p>Australia's First Transparent Labour Hire Platform</p>
+    <p style="margin-top: 0.5rem;">Built with care &bull; Deployed on Railway &bull; fairhire.com.au</p>
+  </footer>
+
+  <script>
+    // === NAV SCROLL ===
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // === REVEAL ON SCROLL ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Animate counters
+          entry.target.querySelectorAll('.counter').forEach(counter => {
+            animateCounter(counter);
+          });
+          // Animate progress bars
+          entry.target.querySelectorAll('.progress-bar-fill').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            setTimeout(() => { bar.style.width = width + '%'; }, 200);
+          });
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+      observer.observe(el);
+    });
+
+    // === COUNTER ANIMATION ===
+    function animateCounter(el) {
+      if (el.dataset.animated) return;
+      el.dataset.animated = true;
+      const target = parseInt(el.dataset.target);
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased).toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    // === PORTAL TABS ===
+    function switchTab(tab) {
+      document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.portal-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tab).classList.add('active');
+    }
+
+    // === ACCORDION ===
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      const wasOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+      // Toggle clicked
+      if (!wasOpen) item.classList.add('open');
+    }
+
+    // === SMOOTH SCROLL FOR NAV ===
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
