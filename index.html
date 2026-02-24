@@ -699,6 +699,145 @@
       font-size: 0.85rem;
     }
 
+    /* === LOGIN OVERLAY === */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    .login-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      margin: 1rem;
+    }
+    .login-box .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .login-box .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+    .login-box .lock-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(245,166,35,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin: 0 auto 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus {
+      border-color: var(--gold);
+    }
+    .form-group input::placeholder {
+      color: var(--text-dim);
+    }
+    .login-btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+    .login-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(245,166,35,0.3);
+    }
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .login-error {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.2);
+      color: var(--red);
+      font-size: 0.85rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .login-error.show { display: block; }
+    .login-footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .app-content.locked {
+      display: none;
+    }
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.875rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .logout-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
     /* === SCROLLBAR === */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -851,6 +990,31 @@
 </head>
 <body>
 
+  <!-- LOGIN OVERLAY -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-box">
+      <div class="lock-icon">&#128274;</div>
+      <div class="logo">FAIR HIRE</div>
+      <div class="subtitle">Investor &amp; Admin Portal</div>
+      <div id="loginError" class="login-error"></div>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@fairhire.com.au" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+      </form>
+      <div class="login-footer">Access restricted to authorised personnel</div>
+    </div>
+  </div>
+
+  <!-- APP CONTENT -->
+  <div id="appContent" class="app-content locked">
+
   <!-- NAV -->
   <nav id="nav">
     <div class="nav-brand">FAIR HIRE</div>
@@ -862,6 +1026,7 @@
       <li><a href="#tech">Tech Stack</a></li>
       <li><a href="#security">Security</a></li>
       <li><a href="#timeline">Timeline</a></li>
+      <li><button class="logout-btn" onclick="handleLogout()">Sign Out</button></li>
     </ul>
   </nav>
 
@@ -1628,7 +1793,94 @@
     <p style="margin-top: 0.5rem;">Built with care &bull; Deployed on Railway &bull; fairhire.com.au</p>
   </footer>
 
+  </div><!-- /app-content -->
+
   <script>
+    const API_URL = 'https://api.fairhire.com.au';
+    const ALLOWED_TYPES = ['admin', 'investor'];
+
+    // === AUTH: CHECK SESSION ON LOAD ===
+    (function checkSession() {
+      const session = sessionStorage.getItem('fh_showcase_session');
+      if (session) {
+        try {
+          const data = JSON.parse(session);
+          if (data.userType && ALLOWED_TYPES.includes(data.userType)) {
+            unlockContent(data);
+            return;
+          }
+        } catch(e) { /* invalid session */ }
+        sessionStorage.removeItem('fh_showcase_session');
+      }
+    })();
+
+    // === AUTH: LOGIN ===
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const errorEl = document.getElementById('loginError');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      errorEl.classList.remove('show');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      try {
+        const res = await fetch(API_URL + '/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Login failed');
+        }
+
+        if (!ALLOWED_TYPES.includes(data.user.userType)) {
+          throw new Error('Access restricted to admin and investor accounts');
+        }
+
+        // Store session
+        sessionStorage.setItem('fh_showcase_session', JSON.stringify({
+          name: data.user.name,
+          email: data.user.email,
+          userType: data.user.userType,
+          token: data.accessToken
+        }));
+
+        unlockContent(data.user);
+
+      } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    }
+
+    // === AUTH: UNLOCK CONTENT ===
+    function unlockContent(user) {
+      document.getElementById('loginOverlay').classList.add('hidden');
+      document.getElementById('appContent').classList.remove('locked');
+      document.body.style.overflow = '';
+    }
+
+    // === AUTH: LOGOUT ===
+    function handleLogout() {
+      sessionStorage.removeItem('fh_showcase_session');
+      document.getElementById('loginOverlay').classList.remove('hidden');
+      document.getElementById('appContent').classList.add('locked');
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('loginError').classList.remove('show');
+      document.getElementById('loginBtn').textContent = 'Sign In';
+      document.getElementById('loginBtn').disabled = false;
+      window.scrollTo(0, 0);
+    }
+
     // === NAV SCROLL ===
     window.addEventListener('scroll', () => {
       document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
