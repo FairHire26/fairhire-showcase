@@ -1101,7 +1101,7 @@
       <div class="overview-card reveal" style="transition-delay: 0.3s">
         <div class="icon icon-red">&#128231;</div>
         <h3>40+ Email Templates</h3>
-        <p>Automated emails for every event — job assignments, invoices, reminders, password resets, and more via SendGrid.</p>
+        <p>Automated emails for every event — job assignments, invoices, reminders, password resets, and more via AWS SES.</p>
       </div>
       <div class="overview-card reveal" style="transition-delay: 0.35s">
         <div class="icon icon-gold">&#128241;</div>
@@ -1272,7 +1272,7 @@
           <div class="feature-list">
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Worker Signup</h4><p>Industry selection, skills, hourly rate, employment type (contractor/PAYG), TFN encryption, super fund details</p></div></div>
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Client Signup</h4><p>Company details, ABN lookup, billing address, subscription tier selection</p></div></div>
-            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Email Verification</h4><p>6-digit code with 10-minute expiry via SendGrid</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Email Verification</h4><p>6-digit code with 10-minute expiry via AWS SES</p></div></div>
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>JWT Token System</h4><p>Access token (15min) + refresh token (7 days) with auto-refresh via axios interceptor</p></div></div>
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Password Reset</h4><p>Forgot password flow with time-limited tokens sent via email</p></div></div>
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Worker Invitations</h4><p>Admin invites workers with pre-filled data, 14-day JWT invitation tokens</p></div></div>
@@ -1355,7 +1355,7 @@
         <div class="accordion-body-inner">
           <div class="feature-list">
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>In-App Chat</h4><p>Full messaging system with conversation threads, read receipts, and unread counts</p></div></div>
-            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Email Reply Integration</h4><p>Workers and clients can reply to messages via email — parsed back into the chat via SendGrid Inbound</p></div></div>
+            <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Email Reply Integration</h4><p>Workers and clients can reply to messages via email — parsed back into the chat via AWS SES</p></div></div>
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Push Notifications</h4><p>iOS &amp; Android via device tokens with per-user notification preferences</p></div></div>
             <div class="feature-item"><div class="feature-check">&#10003;</div><div class="feature-item-text"><h4>Notification Centre</h4><p>Bell icon with unread count, notification types for every platform event</p></div></div>
           </div>
@@ -1491,8 +1491,8 @@
       </div>
       <div class="integration-card">
         <div class="int-icon">&#128231;</div>
-        <h4>SendGrid</h4>
-        <p>40+ email templates, Inbound Parse for reply-to-chat</p>
+        <h4>AWS SES</h4>
+        <p>40+ email templates, inbound email for reply-to-chat</p>
       </div>
       <div class="integration-card">
         <div class="int-icon">&#9729;&#65039;</div>
@@ -1648,7 +1648,7 @@
         <div class="progress-bar-bg"><div class="progress-bar-fill green" data-width="100"></div></div>
       </div>
       <div class="progress-bar-container" style="margin-bottom: 1.5rem">
-        <div class="progress-label"><span>Integrations (Stripe, SendGrid, S3, GCal, Xero)</span><span>100%</span></div>
+        <div class="progress-label"><span>Integrations (Stripe, AWS SES, S3, GCal, Xero)</span><span>100%</span></div>
         <div class="progress-bar-bg"><div class="progress-bar-fill blue" data-width="100"></div></div>
       </div>
       <div class="progress-bar-container" style="margin-bottom: 1.5rem">
@@ -1772,8 +1772,10 @@
       <div class="section-title">See It In Action</div>
       <div class="section-desc">A cinematic overview of what's been built for Fair Hire.</div>
     </div>
-    <div class="video-container reveal">
-      <iframe src="https://ai.invideo.io/ai-mcp-video?video=fair-hire-platform-saas-labour-hire-platform-showcase-ddnxvk" allowfullscreen></iframe>
+    <div class="video-container reveal" id="video-section">
+      <!-- Replace VIDEO_ID below with your YouTube video ID once uploaded -->
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID?rel=0&modestbranding=1" allowfullscreen title="Fair Hire Platform Walkthrough"></iframe>
+      <!-- To update: upload the InVideo export to YouTube (unlisted), then replace VIDEO_ID with the YouTube ID e.g. dQw4w9WgXcQ -->
     </div>
   </section>
 
